@@ -2,6 +2,8 @@
 
 A simple web app that is integrated with a physical Barcode / QR code scanner.
 
+<img src="./doc/demo.png" width="500" >
+
 # Local Development
 
 This proof-of-concept was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
