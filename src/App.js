@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import './App.css';
 
 const SampleCodes = [
@@ -25,7 +25,7 @@ const SampleCodes = [
 ];
 
 function App() {
-  const [scanResults, setScanResults] = React.useState([]);
+  const [scanResults, setScanResults] = useState([]);
   const clearAllScanResults = () => setScanResults([]);
   const appendScanResult = (value) => setScanResults((prev) =>{
     if (prev.length > 0) {
@@ -47,6 +47,10 @@ function App() {
   
 
   useEffect(() => {
+    // Barcode scanner is set up as a keyboard input device
+    // so it will send a keypress event for each character when a barcode / qr code is scanned
+    // The Enter key is used to indicate the end of a scan
+
     window.addEventListener("keypress", handleInput);
 
     return () => {
