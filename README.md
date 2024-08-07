@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# QR Check In Experiment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple web app that is integrated with a physical Barcode / QR code scanner.
 
-## Available Scripts
+# Local Development
 
-In the project directory, you can run:
+This proof-of-concept was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### `npm start`
+To run it locally, use:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+npm start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Setting up the External Barcode Scanner Device
 
-### `npm test`
+An external barcode scanner is essentially a keyboard. I purchased [this one from Amazon](https://www.amazon.com/dp/B09897DPKX?psc=1&ref=ppx_yo2ov_dt_b_product_details) for about $30. To set it up, you'll need to connect it to your computer (via a USB cord or Bluetooth dongle), and then follow the steps your operating system requires to pair a keyboard.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Depending on the Scanner you've purchased, this might include downloading a driver, or simply scanning a barcode / QR code in the user manual when the Keyboard Setup Assistant asks you to press the `Shift` key to identify the keyboard. Make sure you scan the code that marks 
 
-### `npm run build`
+#### Helpful Commands
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**List usb devices**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Mac OS
+```
+# macos unix
+ioreg -p IOUSB
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# windows
+wmic path CIM_LogicalDevice where "Description like 'USB%'" get /value
 
-### `npm run eject`
+# powershell
+Get-PnpDevice -PresentOnly | Where-Object { $_.InstanceId -match '^USB' }
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Expect to see a line containing `Barcode Scanner@02140000`
+```
++-o Root  <class IORegistryEntry, id 0x100000100, retain 37>
+  +-o AppleT8122USBXHCI@02000000  <class AppleT8122USBXHCI, id 0x10000050b, registered, matched, active, busy 0 (5002 ms), retain 199>
+  | +-o IOUSBHostDevice@02100000  <class IOUSBHostDevice, id 0x10002496d, registered, matched, active, busy 0 (1596 ms), retain 39>
+  |   +-o IOUSBHostDevice@02130000  <class IOUSBHostDevice, id 0x10002498b, registered, matched, active, busy 0 (1241 ms), retain 36>
+  |   | +-o USB BillBoard@02132000  <class IOUSBHostDevice, id 0x1000249ed, registered, matched, active, busy 0 (282 ms), retain 29>
+  |   +-o USB Storage@02120000  <class IOUSBHostDevice, id 0x1000249a9, registered, matched, active, busy 0 (347 ms), retain 29>
+  |   +-o Barcode Scanner@02140000  <class IOUSBHostDevice, id 0x100024a41, registered, matched, active, busy 0 (49 ms), retain 37>
+  +-o AppleT8122USBXHCI@01000000  <class AppleT8122USBXHCI, id 0x1000004c6, registered, matched, active, busy 0 (4 ms), retain 37>
+  +-o AppleT8122USBXHCI@00000000  <class AppleT8122USBXHCI, id 0x1000003a3, registered, matched, active, busy 0 (10528 ms), retain 273>
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Restarting the Keyboard Assistant on MacOS**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+On Mac OS X, if you press "cancel" and close the Keyboard Setup Assistant without completing the setup, it may be difficult to get the setup assistant to start again. If this happens, disconnect the scanner, and reset your system keyboard preferences by opening the Finder, navigating to Go > Go to Folder, entering `/Library/Preferences/` and then deleting the file `com.apple.keyboardtype.plist`. Next, restart your computer and reconnect the scanner. You should
